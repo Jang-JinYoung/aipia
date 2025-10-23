@@ -64,3 +64,67 @@
   color: #999;
   margin: 0;
 }
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #fff;
+  color: #111;
+}
+
+/* 헤더 전체 컨테이너 */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px 16px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* 타이틀 */
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+/* 탭 메뉴 컨테이너 */
+.tab-menu {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+}
+
+/* 각 탭 항목 */
+.tab-item {
+  position: relative;
+  font-size: 15px;
+  font-weight: 500;
+  color: #555;
+  padding-bottom: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.tab-item:hover {
+  color: #000;
+}
+
+/* 활성 탭 */
+.tab-item.active {
+  color: #000;
+  font-weight: 600;
+}
+
+/* 활성 탭 밑줄 */
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background-color: #000;
+  border-radius: 1px;
+}

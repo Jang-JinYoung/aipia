@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../../libs/network";
 import Article from "../components/Article";
+import Header from "../components/Header";
 
 const BoardTemplate = () => {
+    // 신문 기사ID 목록 조회
     const { data: articleList, isLoading: isArticleListLoading } = useQuery({
         queryKey: ["article", "list"],
         queryFn: () =>
@@ -18,6 +20,7 @@ const BoardTemplate = () => {
             {/* {articleList.map((articleId: number) => (
                 <Article articleId={articleId} />
             ))} */}
+            <Header />
             <Article articleId={articleList[0]} />
         </div>
     );
