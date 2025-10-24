@@ -1,27 +1,64 @@
 import { useQuery } from "@tanstack/react-query";
-import axiosInstance from "../../libs/network";
-import Article from "../components/Article";
-import Header from "../components/Header";
+import { useState } from "react";
+import { getBestStories, getNewStories, getTopStories } from "../../libs/api";
+import { getToLowerCase } from "../../utils/stringUtil";
+import Story from "../components/Story";
+
 
 const BoardTemplate = () => {
+    const [activeTab, setActiveTab] = useState("top");
+
     // 신문 기사ID 목록 조회
-    const { data: articleList, isLoading: isArticleListLoading } = useQuery({
-        queryKey: ["article", "list"],
-        queryFn: () =>
-            axiosInstance.get("/topstories.json").then((res) => res.data),
+    const { data, isLoading } = useQuery({
+        queryKey: ["article", "list", activeTab],
+        queryFn: () => getQueryFn(),
     });
 
-    if (isArticleListLoading) {
-        return <div>loading..</div>;
-    }
+    // 탭에 따른 쿼리호출
+    const getQueryFn = () => {
+        if (activeTab === "top") {
+            return getTopStories();
+        } else if (activeTab === "new") {
+            return getNewStories();
+        } else if (activeTab === "best") {
+            return getBestStories();
+        }
+    };
+
 
     return (
         <div>
-            {/* {articleList.map((articleId: number) => (
+            <header className="header">
+                <h1 className="header-title">AIPIA News</h1>
+                <nav className="tab-menu">
+                    {["Top", "New", "Best"].map((tab) => (
+                        <div
+                            key={tab}
+                            className={`tab-item ${
+                                activeTab === getToLowerCase(tab)
+                                    ? "active"
+                                    : ""
+                            }`}
+                            onClick={() => setActiveTab(getToLowerCase(tab))}
+                        >
+                            {tab}
+                        </div>
+                    ))}
+                </nav>
+            </header>
+            {isLoading ? (
+                <div>isLoading..</div>
+            ) : data ? (
+                <div className="article-list">
+                    {/* {articleList.map((articleId: number) => (
                 <Article articleId={articleId} />
             ))} */}
-            <Header />
-            <Article articleId={articleList[0]} />
+                    <Story articleId={data[0]} />
+                    <Story articleId={data[1]} />
+                </div>
+            ) : (
+                <div>No Data</div>
+            )}
         </div>
     );
 };
