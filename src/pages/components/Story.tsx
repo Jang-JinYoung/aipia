@@ -9,13 +9,13 @@
 
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../../libs/network";
-import { getFormatDate } from "../../utils/time";
+import { getFormatDate } from "../../utils/timeUtil";
 
 interface IProps {
     articleId: number;
 }
 
-const Article = ({ articleId }: IProps) => {
+const Story = ({ articleId }: IProps) => {
     const { data: article, isLoading: isArticleLoading } = useQuery({
         queryKey: ["article", articleId],
         queryFn: () =>
@@ -29,17 +29,18 @@ const Article = ({ articleId }: IProps) => {
     }
 
     return (
-        <div className="card">
-            <div className="thumbnail">
-                <img src="" alt="" />
-            </div>
-            <div className="content">
-                <div className="title">{article.title}</div>
-                <div className="author">{article.by}</div>
-                <div className="date">{getFormatDate(article.time)}</div>
+        <div className="article-card">
+            <div className="article-thumbnail" />
+            <div className="article-content">
+                <div className="article-title">{article.title}</div>
+                <div className="article-meta">
+                    {article.by}
+                    <br />
+                    {getFormatDate(article.time)}
+                </div>
             </div>
         </div>
     );
 };
 
-export default Article;
+export default Story;
